@@ -141,14 +141,26 @@ def delete(request, id):
 @login_required(login_url='/login')
 def search_results(request):
     query = request.GET.get('q')
+
     users = Profile.objects.filter(user__username__icontains=query)
     posts = Post.objects.filter(caption__icontains=query)
+
     context = {
         'query': query,
         'users': users,
         'posts': posts,
     }
     return render(request, 'search_user.html', context)
+# def search_results(request):
+#     query = request.GET.get('q')
+#     users = Profile.objects.filter(user__username__icontains=query)
+#     posts = Post.objects.filter(caption__icontains=query)
+#     context = {
+#         'query': query,
+#         'users': users,
+#         'posts': posts,
+#     }
+#     return render(request, 'search_user.html', context)
 
 def home_post(request, id):
     post = Post.objects.get(id=id)

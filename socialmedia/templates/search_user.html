@@ -1,21 +1,73 @@
-               
+<!-- <h1>Search Results for "{{ query }}"</h1>
 
-                <h1>Search Results for "{{ query }}"</h1>
-                <div class="container">
-                    <h2>User Profiles</h2>
-                    
-                    <table class="table">
-                        
-                        <tbody>
-                            {% for user in users %}
-                            <tr>
-                                <td><h1><strong><a href="/profile/{{user.user.username}}">@{{user.user.username}}</a> </strong></h1></td>
-                                
-                            </tr>
-                            {% endfor %}
-                            
-                            
-                        </tbody>
-                    </table>
-                </div>
-                
+<div class="container">
+    <h2>User Profiles</h2>
+    
+    <table class="table">
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <img src="{{ user.profileimg.url }}" alt="Profile Image" class="rounded-circle" width="50" height="50">
+                </td>
+                <td>
+                    <h4><a href="/profile/{{ user.user.username }}">@{{ user.user.username }}</a></h4>
+                    <p>{{ user.bio|default:"No bio available" }}</p>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+ -->
+
+ <h1>Search Results for "{{ query }}"</h1>
+
+<div class="container">
+    <h2>User Profiles</h2>
+    <table class="table">
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <img src="{{ user.profileimg.url }}" alt="Profile Image" class="rounded-circle" width="50" height="50">
+                </td>
+                <td>
+                    <h4><a href="/profile/{{ user.user.username }}">@{{ user.user.username }}</a></h4>
+                    <p>{{ user.bio|default:"No bio available" }}</p>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Posts</h2>
+    <table class="table">
+        <tbody>
+            {% for post in posts %}
+            <tr>
+                <td>
+                    <img src="{{ post.image.url }}" alt="Post Image" width="100">
+                </td>
+                <td>
+                    <h5><a href="/profile/{{ post.user }}">@{{ post.user }}</a></h5>
+                    <p>{{ post.caption }}</p>
+                    <a href="/#{{ post.id }}" class="btn btn-sm btn-primary">View Post</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No posts found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
