@@ -1,39 +1,40 @@
 from itertools import chain
-from  django.shortcuts  import  get_object_or_404, render, redirect
+from  django . shortcuts  import  get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import *
+from . models import  Followers, LikePost, Post, Profile
 from django.db.models import Q
 
-# Create your views here.
+
 
 
 def signup(request):
-    try:
-        if request.method == 'POST':
-            fnm=request.POST.get('fnm')
-            emailid=request.POST.get('emailid')
-            pwd=request.POST.get('pwd')
-            print(fnm,emailid,pwd)
-            my_user=User.objects.create_user(fnm,emailid,pwd)
-            my_user.save()
-            user_model = User.objects.get(username=fnm)
-            new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
-            new_profile.save()
-            if my_user is not None:
-                login(request,my_user)
-                return redirect('/')
-            return redirect('/login')
+ try:
+    if request.method == 'POST':
+        fnm=request.POST.get('fnm')
+        emailid=request.POST.get('emailid')
+        pwd=request.POST.get('pwd')
+        print(fnm,emailid,pwd)
+        my_user=User.objects.create_user(fnm,emailid,pwd)
+        my_user.save()
+        user_model = User.objects.get(username=fnm)
+        new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
+        new_profile.save()
+        if my_user is not None:
+            login(request,my_user)
+            return redirect('/')
+        return redirect('/login')
+    
         
-            
-    except:
-            invalid="User already exists"
-            return render(request, 'signup.html',{'invalid':invalid})
+ except:
+        invalid="User already exists"
+        return render(request, 'signup.html',{'invalid':invalid})
   
-    return render(request, 'signup.html')
-
+    
+ return render(request, 'signup.html')
+        
 def loginn(request):
  
   if request.method == 'POST':
@@ -51,11 +52,32 @@ def loginn(request):
                
   return render(request, 'loginn.html')
 
+@login_required(login_url='/login')
 def logoutt(request):
     logout(request)
     return redirect('/login')
 
 
+
+@login_required(login_url='/login')
+def home(request):
+    
+    following_users = Followers.objects.filter(follower=request.user.username).values_list('user', flat=True)
+
+    
+    post = Post.objects.filter(Q(user=request.user.username) | Q(user__in=following_users)).order_by('-created_at')
+
+    profile = Profile.objects.get(user=request.user)
+
+    context = {
+        'post': post,
+        'profile': profile,
+    }
+    return render(request, 'main.html',context)
+    
+
+
+@login_required(login_url='/login')
 def upload(request):
 
     if request.method == 'POST':
@@ -70,35 +92,7 @@ def upload(request):
     else:
         return redirect('/')
 
-def search_results(request):
-    query = request.GET.get('q')
-
-    users = Profile.objects.filter(user__username__icontains=query)
-    posts = Post.objects.filter(caption__icontains=query)
-
-    context = {
-        'query': query,
-        'users': users,
-        'posts': posts,
-    }
-    return render(request, 'search_user.html', context)
-
-
-def home(request):
-    
-    following_users = Followers.objects.filter(follower=request.user.username).values_list('user', flat=True)
-
-    
-    post = Post.objects.all().order_by('-created_at')
-
-    profile = Profile.objects.get(user=request.user)
-
-    context = {
-        'post': post,
-        'profile': profile,
-    }
-    return render(request, 'main.html',context)
-
+@login_required(login_url='/login')
 def likes(request, id):
     if request.method == 'GET':
         username = request.user.username
@@ -121,16 +115,7 @@ def likes(request, id):
         # Redirect back to the post's detail page
         return redirect('/#'+id)
     
-
-def home_post(request,id):
-    post=Post.objects.get(id=id)
-    profile = Profile.objects.get(user=request.user)
-    context={
-        'post':post,
-        'profile':profile
-    }
-    return render(request, 'main.html',context)
-
+@login_required(login_url='/login')
 def explore(request):
     post=Post.objects.all().order_by('-created_at')
     profile = Profile.objects.get(user=request.user)
@@ -141,7 +126,8 @@ def explore(request):
         
     }
     return render(request, 'explore.html',context)
-
+    
+@login_required(login_url='/login')
 def profile(request,id_user):
     user_object = User.objects.get(username=id_user)
     print(user_object)
@@ -199,6 +185,39 @@ def profile(request,id_user):
         else:
             return render(request, 'profile.html', context)
     return render(request, 'profile.html', context)
+
+@login_required(login_url='/login')
+def delete(request, id):
+    post = Post.objects.get(id=id)
+    post.delete()
+
+    return redirect('/profile/'+ request.user.username)
+
+
+@login_required(login_url='/login')
+def search_results(request):
+    query = request.GET.get('q')
+
+    users = Profile.objects.filter(user__username__icontains=query)
+    posts = Post.objects.filter(caption__icontains=query)
+
+    context = {
+        'query': query,
+        'users': users,
+        'posts': posts,
+    }
+    return render(request, 'search_user.html', context)
+
+def home_post(request,id):
+    post=Post.objects.get(id=id)
+    profile = Profile.objects.get(user=request.user)
+    context={
+        'post':post,
+        'profile':profile
+    }
+    return render(request, 'main.html',context)
+
+
 
 def follow(request):
     if request.method == 'POST':
