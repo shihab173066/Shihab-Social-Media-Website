@@ -219,3 +219,74 @@ A homepage displaying posts from all users.
 A profile page for the logged-in user, showing their posts with options to edit or delete.
 
 A clean, simple navbar and footer for navigation.
+
+------------------Extended Version for exam--------------------------------
+Question
+
+DJA02 - Advanced Social Media Application BRD
+
+1. Introduction
+
+This assignment enhances DJA01 - Social Media Application BRD by adding post filtering and
+
+search functionalities. Users can now filter posts by date, media type, and author, along with a
+
+keyword-based search.
+
+2. Objectives
+
+● Extend Django skills with filtering and search features.
+
+● Improve data retrieval efficiency.
+
+● Enhance user experience with better post navigation.
+
+3. Scope
+
+Core Features
+
+1. User Management (Same as DJA01)
+
+● Registration, login, logout, and authentication using Django’s built-in user model.
+
+● Access control ensuring that only authenticated users can create, edit, or delete posts.
+
+2. Post Management (Same as DJA01 with Enhancements)
+
+● Homepage (Global Feed): Display all users' posts with sorting and filtering options.
+
+● Profile Page: Show only the logged-in user’s posts with filtering and sorting options.
+
+● Post Creation: Users can create posts with text and optional image uploads.
+
+● Edit & Delete: Only the post owner can edit or delete their posts.
+
+3. Filtering & Search (New Additions)
+
+● Filtering Options:
+
+○ Filter posts by date (latest/oldest).
+
+○ Filter posts by media type (text-only, images, or both).
+
+○ Filter posts by post owner (view posts from a specific user).
+
+● Search Bar:
+
+○ Users can search for posts based on keywords in the post content.
+
+4. Functional Requirements
+
+Filtering & Search (New Additions)
+
+● Users can filter posts based on:
+
+○ Date: Show newest or oldest posts first.
+
+○ Media Type: Filter posts with or without images.
+
+○ User: View posts from a specific user.
+
+● A search bar allows users to search posts by content keywords.
+
+Submission guideline: Submit your gitHub repository link
