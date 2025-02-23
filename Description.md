@@ -1,4 +1,4 @@
-# Shihab-Social-Media-Website
+# Shihab-Social Media Website
 DJA01 - Social Media Application BRD
 
 Table of Contents
