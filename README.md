@@ -25,10 +25,14 @@ Activate the virtual environment:
 venv\Scripts\activate
 
 Install the project dependencies:
+pip install django
 pip install pillow
 
 Perform database migrations:
 python manage.py migrate
+
+Run server:
+python manage.py runserver
 
 Superadmin User -
 Username: shihab
