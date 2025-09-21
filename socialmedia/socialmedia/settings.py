@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-&829@5$%wyo*8n-*ai*qb4venobw6x_=u%dtvpnk5+tnt3vwv%
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    ".onrender.com",
+    "shihab-social-media-website-1.onrender.com",
     "myecommercesite.com",
     "www.myecommercesite.com"
 ]
