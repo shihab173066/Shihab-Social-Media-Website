@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     "www.myecommercesite.com"
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "https://shihab-social-media-website-1.onrender.com",
+]
 
 # Application definition
 
